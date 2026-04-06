@@ -22,15 +22,13 @@ int countPairs1(int *arr, int len, int value) {
 int findFirst(int *data, int lo, int hi, int target) {
     int ans = -1;
     while (lo <= hi) {
-        int mid = (lo + hi) / 2;
+        int mid = lo + (hi - lo) / 2;
         if (data[mid] == target) {
             ans = mid;
             hi = mid - 1;
-        }
-        else if (data[mid] < target) {
+        } else if (data[mid] < target) {
             lo = mid + 1;
-        }
-        else {
+        } else {
             hi = mid - 1;
         }
     }
@@ -40,15 +38,13 @@ int findFirst(int *data, int lo, int hi, int target) {
 int findLast(int *data, int lo, int hi, int target) {
     int ans = -1;
     while (lo <= hi) {
-        int mid = (lo + hi) / 2;
+        int mid = lo + (hi - lo) / 2;
         if (data[mid] == target) {
             ans = mid;
             lo = mid + 1;
-        }
-        else if (data[mid] < target) {
+        } else if (data[mid] < target) {
             lo = mid + 1;
-        }
-        else {
+        } else {
             hi = mid - 1;
         }
     }
@@ -73,35 +69,33 @@ int countPairs2(int *arr, int len, int value) {
 
 int countPairs3(int *arr, int len, int value) {
     int res = 0;
-    int L = 0;
-    int R = len - 1;
+    int left = 0;
+    int right = len - 1;
     
-    while (L < R) {
-        int cur = arr[L] + arr[R];
-        if (cur == value) {
-            if (arr[L] == arr[R]) {
-                int n = R - L + 1;
+    while (left < right) {
+        int sum = arr[left] + arr[right];
+        if (sum == value) {
+            if (arr[left] == arr[right]) {
+                int n = right - left + 1;
                 res += n * (n - 1) / 2;
                 break;
             }
-            int cntL = 0, cntR = 0;
-            int valL = arr[L];
-            int valR = arr[R];
-            while (L <= R && arr[L] == valL) {
-                cntL++;
-                L++;
+            int leftCount = 0, rightCount = 0;
+            int leftVal = arr[left];
+            int rightVal = arr[right];
+            while (left <= right && arr[left] == leftVal) {
+                leftCount++;
+                left++;
             }
-            while (L <= R && arr[R] == valR) {
-                cntR++;
-                R--;
+            while (left <= right && arr[right] == rightVal) {
+                rightCount++;
+                right--;
             }
-            res += cntL * cntR;
-        }
-        else if (cur < value) {
-            L++;
-        }
-        else {
-            R--;
+            res += leftCount * rightCount;
+        } else if (sum < value) {
+            left++;
+        } else {
+            right--;
         }
     }
     return res;
